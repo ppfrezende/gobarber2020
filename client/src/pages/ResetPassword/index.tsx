@@ -36,26 +36,28 @@ const ResetPassword: React.FC = () => {
 
         const schema = Yup.object().shape({
           password: Yup.string().required('Senha obrigatória!'),
-          password_confirmation: Yup.string()
-            .oneOf([Yup.ref('password'), null], 'A senha não bate')
+          password_confirmation: Yup.string().oneOf(
+            [Yup.ref('password'), null],
+            'A senha não bate'
+          ),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        const {password, password_confirmation} = data;
+        const { password, password_confirmation } = data;
         const token = location.search.replace('?token=', '');
 
         if (!token) {
-          throw new Error()
+          throw new Error();
         }
 
         await api.post('/password/reset', {
           password,
           password_confirmation,
-          token
-        })
+          token,
+        });
 
         history.push('/');
       } catch (err) {
@@ -102,7 +104,6 @@ const ResetPassword: React.FC = () => {
 
             <Button type="submit">Alterar Senha</Button>
           </Form>
-
         </AnimationContainer>
       </Content>
 
